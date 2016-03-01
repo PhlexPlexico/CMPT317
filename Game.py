@@ -1,7 +1,8 @@
+import copy
 class Game:
 
     def __init__(self):
-        self.gameBoard = [["." for x in range(6)] for y in range (6)]
+        self.gameBoard = [["." for y in range(6)] for x in range (6)]
         for x in range(6):
             self.gameBoard[0][x] = 'B'
             self.gameBoard[5][x] = 'W'
@@ -19,26 +20,60 @@ class Game:
             print self.gameBoard[x]
             
     def successors(self):
+        #print 'ABOUT TO SUCCESSORS'
         s = []
-        w = self
-        for x in range(6):
-            for y in range(6):
-                for z in range(3):
-                    if self.checkValidMove('left',x,y):
-                        if (self.turn is "Max" and self.getPiece(x,y) is "W") or (self.turn is "Min" and self.getPiece(x,y) is "W"):
-                            w.movePiece('left',x,y)
-                            s.append(w)
-                            w = self
-                    if self.checkValidMove('forward',x,y):
-                        if (self.turn is "Max" and self.getPiece(x,y) is "W") or (self.turn is "Min" and self.getPiece(x,y) is "W"):
-                            w.movePiece('forward',x,y)
-                            s.append(w)
-                            w = self
-                    if self.checkValidMove('right',x,y):
-                        if (self.turn is "Max" and self.getPiece(x,y) is "W") or (self.turn is "Min" and self.getPiece(x,y) is "W"):
-                            w.movePiece('right',x,y)
-                            s.append(w)
-                            w = self
+        #print 'KAY WE GOT AN EMPTY LIST'
+        w = copy.deepcopy(self)
+        #w = self
+        #print 'WE COPIED IT, DOES IT WORK?'
+        #print w.str()
+        for y in range(6):
+            for x in range(6):
+                if self.checkValidMove('left',y,x):
+                    if self.turn is 'Max' and self.getPiece(y,x) is 'W':
+                        w.movePiece('left',y,x)
+                        #Debugging
+                        #print w.str()
+                        s.append(w)
+                        w = self
+                    if self.turn is 'Min' and self.getPiece(y,x) is 'B':
+                        w.movePiece('left',y,x)
+                        print w.str()
+                        s.append(w)
+                        w = self    
+                if self.checkValidMove('forward',y,x):
+                    if self.turn is 'Max' and self.getPiece(y,x) is 'W':
+                        #Debugging
+                        #print 'DOES THIS LOGIC WORK!?!?!?!?!?!?!?!?!'
+                        w.movePiece('forward',y,x)
+                        #Debugging
+                        #print w.str()
+                        s.append(w)
+                        #Debugging
+                        #print s
+                        w = self
+                    if self.turn is 'Min' and self.getPiece(y,x) is 'B':
+                        w.movePiece('forward',y,x)
+                        #Debugging
+                        #print w.str()
+                        s.append(w)
+                        w = self  
+                if self.checkValidMove('right',y,x):
+                    if self.turn is 'Max' and self.getPiece(y,x) is 'W':
+                        w.movePiece('right',y,x)
+                        #Debugging
+                        #print w.str()
+                        s.append(w)
+                        w = self
+                    if self.turn is 'Min' and self.getPiece(y,x) is 'B':
+                        w.movePiece('right',y,x)
+                        #Debugging
+                        #print w.str()
+                        s.append(w)
+                        w = self
+        
+        for x in s:
+            print "Here is a successor: ", x.str()
         return s
             
     #def allBlanks(self):
@@ -59,61 +94,77 @@ class Game:
         else:
             return False
             
+    """
+    Function for utility, in checking on who wins.
+    """
     def utility(self):
         """
         return: If white wins, return 1, if black wins, return -1, and if we do not find any return 0.
         """
         for x in range(6):
-            if self.getPiece(x,0) is 'W':
+            if self.getPiece(0,x) is 'W':
                 return 1
-            elif self.getPiece(x,5) is 'B':
+            elif self.getPiece(5,x) is 'B':
                 return -1
         return 0
-            
+    """
+    Function used to count how many pieces are currently on the board that are white.
+    return: the count of white pieces on the board.
+    """  
     def countWhite(self):
         count = 0
         for x in range(6):
             for y in range(6):
-                if self.gameBoard[x][y] is 'W':
+                if self.gameBoard[y][x] is 'W':
                     count += 1
         return count
         
-        
+    """
+    Function used to count how many pieces are currently on the board that are black.
+    return: the count of black pieces on the board.
+    """
     def countBlack(self):
         count = 0
         for x in range(6):
             for y in range(6):
-                if self.gameBoard[x][y] is 'B':
+                if self.gameBoard[y][x] is 'B':
                     count += 1
         return count
         
-    def getPiece(self,x,y):
-        return self.gameBoard[x][y]
+    def getPiece(self,y,x):
+        return self.gameBoard[y][x]
         
-    def setPiece(self, x,y,newPiece):
-        self.gameBoard[x][y] = newPiece
-        
-    def checkValidMove(self,direction,x,y):
-        if self.getPiece(x,y) is 'W':
+    def setPiece(self, y,x,newPiece):
+        self.gameBoard[y][x] = newPiece
+    """
+    Function used to check for a valid move. Used by successor function for the AI.
+    The user should not be using this?
+    Param: self the game object.
+    Param: direction, where the person or ai wishes to move (left, right, up, down).
+    Param: x, the x value of the board.
+    Param: y, the y value of the board.
+    """
+    def checkValidMove(self,direction,y,x):
+        if self.getPiece(y,x) is 'W':
             if y is not 0:
                 if direction is 'left':
                     if x is 0:
                         return False
-                    elif self.getPiece(x-1,y-1) is 'B':
+                    elif self.getPiece(y-1,x-1) is 'B':
                         return True
                     else:
                         return False
                 elif direction is 'right':
                     if x is 5:
                         return False
-                    elif self.getPiece(x-1,y+1) is 'B':
+                    elif self.getPiece(y-1,x+1) is 'B':
                         return True
                     else:
                         return False
                 elif direction is 'forward':
-                    if self.getPiece(x-1,y) is 'B':
+                    if self.getPiece(y-1,x) is 'B':
                         return False
-                    elif self.getPiece(x-1,y) is '.':
+                    elif self.getPiece(y-1,x) is '.':
                         return True
                     else:
                         return False
@@ -121,26 +172,26 @@ class Game:
                     return False
             else:
                 return False
-        elif self.getPiece(x,y) is 'B':
+        elif self.getPiece(y,x) is 'B':
             if y is not 5:
                 if direction is 'left':
                     if x is 0:
                         return False
-                    elif self.getPiece(x+1,y-1) is 'W':
+                    elif self.getPiece(y+1,x-1) is 'W':
                         return True
                     else:
                         return False
                 elif direction is 'right':
                     if x is 5:
                         return False
-                    elif self.getPiece(x+1,y+1) is 'W':
+                    elif self.getPiece(y+1,x+1) is 'W':
                         return True
                     else:
                         return False
                 elif direction is 'forward':
-                    if self.getPiece(x+1,y) is 'W':
+                    if self.getPiece(y+1,x) is 'W':
                         return False
-                    elif self.getPiece(x+1,y) is '.':
+                    elif self.getPiece(y+1,x) is '.':
                         return True
                     else:
                         return False
@@ -150,81 +201,121 @@ class Game:
                 return False
         else:
             return False
-        
-    def movePiece(self,direction,x,y):
-        if self.getPiece(x,y) is 'W':
+    
+    """
+    Function used to check for a moving a piece.
+    The user should be using this?
+    Param: self the game object.
+    Param: direction, where the person or ai wishes to move (left, right, up, down).
+    Param: x, the x value of the board.
+    Param: y, the y value of the board.
+    """
+    def movePiece(self,direction,y,x):
+        toggle = False
+        if self.getPiece(y,x) is 'W':
             if y is not 0:
                 if direction is 'left':
                     if x is 0:
                         print 'That move is outside the board!'
-                    elif self.getPiece(x-1,y-1) is 'B':
-                        self.setPiece(x-1,y-1,'W')
-                        self.setPiece(x,y,'.')
+                        toggle = True
+                    elif self.getPiece(y-1,x-1) is 'B':
+                        self.setPiece(y-1,x-1,'W')
+                        self.setPiece(y,x,'.')
+                        print 'white moves left'
                     else:
                         print 'That is an invalid move!'
+                        toggle = True
                 elif direction is 'right':
                     if x is 5:
                         print 'That move is outside the board!'
-                    elif self.getPiece(x-1,y+1) is 'B':
-                        self.setPiece(x-1,y+1,'W')
-                        self.setPiece(x,y,'.')
+                        toggle = True
+                    elif self.getPiece(y-1,x+1) is 'B':
+                        self.setPiece(y-1,x+1,'W')
+                        self.setPiece(y,x,'.')
+                        print 'white moves right'
                     else:
                         print 'That is an invalid move!'
+                        toggle = True
                 elif direction is 'forward':
-                    if self.getPiece(x-1,y) is 'B':
+                    if self.getPiece(y-1,x) is 'B':
                         print 'there is a piece there!'
-                    elif self.getPiece(x-1,y) is '.':
-                        self.setPiece(x-1,y,'W')
-                        self.setPiece(x,y,'.')
+                        toggle = True
+                    elif self.getPiece(y-1,x) is '.':
+                        self.setPiece(y-1,x,'W')
+                        self.setPiece(y,x,'.')
+                        print 'white moves forward'
                     else:
                         
                         print 'That is an invalid move!'
+                        toggle = True
                 else:
                     print 'that is not a direction!'
+                    toggle = True
             else:
-                print 'We fucked up the code, chief!'
-        elif self.getPiece(x,y) is 'B':
+                print 'We fucked up the code, chief! White'
+                toggle = True
+        elif self.getPiece(y,x) is 'B':
             if y is not 5:
                 if direction is 'left':
                     if x is 0:
                         print 'That move is outside the board!'
-                    elif self.getPiece(x+1,y-1) is 'W':
-                        self.setPiece(x+1,y-1,'B')
-                        self.setPiece(x,y,'.')
+                        toggle = True
+                    elif self.getPiece(y+1,x-1) is 'W':
+                        self.setPiece(y+1,x-1,'B')
+                        self.setPiece(y,x,'.')
+                        print 'black moves left'
                     else:
                         print 'That is an invalid move!'
+                        toggle = True
                 elif direction is 'right':
                     if x is 5:
                         print 'That move is outside the board!'
-                    elif self.getPiece(x+1,y+1) is 'W':
-                        self.setPiece(x+1,y+1,'B')
-                        self.setPiece(x,y,'.')
+                        toggle = True
+                    elif self.getPiece(y+1,x+1) is 'W':
+                        self.setPiece(y+1,x+1,'B')
+                        self.setPiece(y,x,'.')
+                        print 'black moves right'
                     else:
                         print 'That is an invalid move!'
+                        toggle = True
                 elif direction is 'forward':
-                    if self.getPiece(x+1,y) is 'W':
+                    if self.getPiece(y+1,x) is 'W':
                         print 'there is a piece there!'
-                    elif self.getPiece(x+1,y) is '.':
-                        self.setPiece(x+1,y,'B')
-                        self.setPiece(x,y,'.')
+                        toggle = True
+                    elif self.getPiece(y+1,x) is '.':
+                        self.setPiece(y+1,x,'B')
+                        self.setPiece(y,x,'.')
+                        print 'black moves forward'
                     else:
                         print 'That is an invalid move!'
+                        toggle = True
                 else:
                     print 'that is not a direction!'
+                    toggle = True
             else:
-                print 'We fucked up the code, chief!'
+                print 'We fucked up the code, chief! Black'
+                toggle = True
         else:
             print 'That is not a piece on the board!'
+            toggle = True
         self.togglePlayer()
             
+    """
+    Check if the current node is terminal, if one is, the game is over.
+    return: true if white or black make it, false otherwise.
+    """
     def isTerminal(self):
         for x in range(6):
-            if self.getPiece(x,0) is 'W':
+            if self.getPiece(0,x) is 'W':
                 return True
-            elif self.getPiece(x,5) is 'B':
+            elif self.getPiece(0,x) is 'B':
                 return True
         return False
         
+    """
+    A string function for the gameboard.
+    Return: the string value of the current gameboard. Used for search.
+    """
     def str(self):
         s = ''
         for i in range(6):
@@ -244,6 +335,7 @@ class Game:
         self.printBoard()
         self.movePiece('left',1,5)
         self.printBoard()
+        #self.successors()
         if self.isTerminal():
             print 'Game is Over! White hit terminal node.'
         print self.str()
@@ -251,4 +343,7 @@ class Game:
     
 if __name__=='__main__':
     x = Game()
-    x.testGame()
+    x.successors()
+    x.printBoard()
+    #x.testGame()
+    
