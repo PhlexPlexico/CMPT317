@@ -35,12 +35,12 @@ class Game:
                         #Debugging
                         #print w.str()
                         s.append(w)
-                        w = self
+                        w = copy.deepcopy(self)
                     if self.turn is 'Min' and self.getPiece(y,x) is 'B':
                         w.movePiece('left',y,x)
                         print w.str()
                         s.append(w)
-                        w = self    
+                        w = copy.deepcopy(self)   
                 if self.checkValidMove('forward',y,x):
                     if self.turn is 'Max' and self.getPiece(y,x) is 'W':
                         #Debugging
@@ -51,26 +51,26 @@ class Game:
                         s.append(w)
                         #Debugging
                         #print s
-                        w = self
+                        w = copy.deepcopy(self)
                     if self.turn is 'Min' and self.getPiece(y,x) is 'B':
                         w.movePiece('forward',y,x)
                         #Debugging
                         #print w.str()
                         s.append(w)
-                        w = self  
+                        w = copy.deepcopy(self) 
                 if self.checkValidMove('right',y,x):
                     if self.turn is 'Max' and self.getPiece(y,x) is 'W':
                         w.movePiece('right',y,x)
                         #Debugging
                         #print w.str()
                         s.append(w)
-                        w = self
+                        w = copy.deepcopy(self)
                     if self.turn is 'Min' and self.getPiece(y,x) is 'B':
                         w.movePiece('right',y,x)
                         #Debugging
                         #print w.str()
                         s.append(w)
-                        w = self
+                        w = copy.deepcopy(self)
         print "\nHere is the boards for successors\n"
         for x in s:
             #print "Here is a successor: ", x.str()
