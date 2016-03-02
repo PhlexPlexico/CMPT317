@@ -308,7 +308,7 @@ class Game:
         for x in range(6):
             if self.getPiece(0,x) is 'W':
                 return True
-            elif self.getPiece(0,x) is 'B':
+            elif self.getPiece(5,x) is 'B':
                 return True
         return False
         
