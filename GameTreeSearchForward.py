@@ -22,17 +22,24 @@ def minimax(node, depth, depthLimit):
         if s in transpositionTable:
             return transpositionTable[s]
         elif node.isTerminal():
-            u = node.utility()
+            #original
+            #u = node.utility()
+            u = (node,node.utility())
         else:
-            vs = [minimax(c, depth+1, depthLimit) for c in node.successors()]
+            sucs = node.successors()
+            vs = [minimax(c, depth+1, depthLimit) for c in sucs]
             if node.isMaxNode():
-                u = max(vs)
+                for x in len(vs):
+                    if u[1] <= (vs[x])[1]:
+                        u = (sucs[x],vs[x])
             elif node.isMinNode():
-                u = min(vs)
+                for x in len(vs):
+                    if u[1] >= (vs[x])[1]:
+                        u = (sucs[x],vs[x])
             else:
                 print("Something went horribly wrong")
                 return None
     else:
-        return node.estimateUtility()
+        u = (node, node.estimateUtility())
     transpositionTable[s] = u
     return u

@@ -112,7 +112,22 @@ class Game:
         return 0
         
     def estimateUtility(self):
-        print 'hi'
+        x = 0
+        y = 0
+        #Check entire board
+        for i in range(6):
+            for j in range(6):
+                #If piece found, give 17 utility to the player for the 
+                #piece being alive, plus 7 utility per space moved for that piece
+                if self.getPiece(i,j) is 'W':
+                    x += 17
+                    x += 7*(5-i)
+                elif self.getPiece(i,j) is 'B':
+                    y += 17
+                    y += 7*i
+        #Utility = positive utility of white plus negative utility of black
+        u = x - y
+        return u
         
     """
     Function used to count how many pieces are currently on the board that are white.
