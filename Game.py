@@ -38,7 +38,7 @@ class Game:
                         w = copy.deepcopy(self)
                     if self.turn is 'Min' and self.getPiece(y,x) is 'B':
                         w.movePiece('left',y,x)
-                        print w.str()
+                        #print w.str()
                         s.append(w)
                         w = copy.deepcopy(self)   
                 if self.checkValidMove('forward',y,x):
@@ -71,12 +71,12 @@ class Game:
                         #print w.str()
                         s.append(w)
                         w = copy.deepcopy(self)
-        print "\nHere is the boards for successors\n"
-        for x in s:
+        #print "\nHere is the boards for successors\n"
+        #for x in s:
             #print "Here is a successor: ", x.str()
             #print "\n"
-            x.printBoard()
-            print "\n"
+        #    x.printBoard()
+        #    print "\n"
         return s
             
     #def allBlanks(self):
@@ -243,7 +243,7 @@ class Game:
                     elif self.getPiece(y-1,x-1) is 'B':
                         self.setPiece(y-1,x-1,'W')
                         self.setPiece(y,x,'.')
-                        print 'white moves left'
+                        #print 'white moves left'
                     else:
                         print 'That is an invalid move!'
                         toggle = True
@@ -254,7 +254,7 @@ class Game:
                     elif self.getPiece(y-1,x+1) is 'B':
                         self.setPiece(y-1,x+1,'W')
                         self.setPiece(y,x,'.')
-                        print 'white moves right'
+                        #print 'white moves right'
                     else:
                         print 'That is an invalid move!'
                         toggle = True
@@ -265,7 +265,7 @@ class Game:
                     elif self.getPiece(y-1,x) is '.':
                         self.setPiece(y-1,x,'W')
                         self.setPiece(y,x,'.')
-                        print 'white moves forward'
+                        #print 'white moves forward'
                     else:
                         
                         print 'That is an invalid move!'
@@ -285,7 +285,7 @@ class Game:
                     elif self.getPiece(y+1,x-1) is 'W':
                         self.setPiece(y+1,x-1,'B')
                         self.setPiece(y,x,'.')
-                        print 'black moves left'
+                        #print 'black moves left'
                     else:
                         print 'That is an invalid move!'
                         toggle = True
@@ -296,7 +296,7 @@ class Game:
                     elif self.getPiece(y+1,x+1) is 'W':
                         self.setPiece(y+1,x+1,'B')
                         self.setPiece(y,x,'.')
-                        print 'black moves right'
+                        #print 'black moves right'
                     else:
                         print 'That is an invalid move!'
                         toggle = True
@@ -307,7 +307,7 @@ class Game:
                     elif self.getPiece(y+1,x) is '.':
                         self.setPiece(y+1,x,'B')
                         self.setPiece(y,x,'.')
-                        print 'black moves forward'
+                        #print 'black moves forward'
                     else:
                         print 'That is an invalid move!'
                         toggle = True
@@ -367,7 +367,9 @@ class Game:
     
 if __name__=='__main__':
     x = Game()
-    x.successors()
-    x.printBoard()
+    #for x in x.successors():
+    #    x.printBoard()
+    #    print "\n"
+    #x.printBoard()
     #x.testGame()
     

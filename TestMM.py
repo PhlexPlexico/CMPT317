@@ -1,5 +1,5 @@
 import Game
-from GameTreeSearch import minimax
+from GameTreeSearchForward import minimax
 
 
 
@@ -35,5 +35,15 @@ if __name__=='__main__':
     a.printBoard()
     #a.togglePlayer()
     #print(a.str())
-    print(minimax(a))
-    #print(minimax(b))
+    
+
+    
+    while not a.isTerminal():
+    #for x in range(5):
+        path = []
+        b = minimax(a, 0, 5, path)
+        print path
+        if not (b[0])[0].isTerminal():
+            a = (b[0])[1]
+        a.printBoard()
+    
