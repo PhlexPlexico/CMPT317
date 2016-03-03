@@ -167,23 +167,23 @@ class Game:
     Param: y, the y value of the board.
     """
     def checkValidMove(self,direction,y,x):
-        if self.getPiece(y,x) is 'W':
+        if self.getPiece(y,x) is 'W' and self.turn is 'Max':
             if y is not 0:
-                if direction is 'left':
+                if direction == 'left':
                     if x is 0:
                         return False
                     elif self.getPiece(y-1,x-1) is 'B':
                         return True
                     else:
                         return False
-                elif direction is 'right':
+                elif direction == 'right':
                     if x is 5:
                         return False
                     elif self.getPiece(y-1,x+1) is 'B':
                         return True
                     else:
                         return False
-                elif direction is 'forward':
+                elif direction == 'forward':
                     if self.getPiece(y-1,x) is 'B':
                         return False
                     elif self.getPiece(y-1,x) is '.':
@@ -194,23 +194,23 @@ class Game:
                     return False
             else:
                 return False
-        elif self.getPiece(y,x) is 'B':
+        elif self.getPiece(y,x) is 'B' and self.turn is 'Min':
             if y is not 5:
-                if direction is 'left':
+                if direction == 'left':
                     if x is 0:
                         return False
                     elif self.getPiece(y+1,x-1) is 'W':
                         return True
                     else:
                         return False
-                elif direction is 'right':
+                elif direction == 'right':
                     if x is 5:
                         return False
                     elif self.getPiece(y+1,x+1) is 'W':
                         return True
                     else:
                         return False
-                elif direction is 'forward':
+                elif direction == 'forward':
                     if self.getPiece(y+1,x) is 'W':
                         return False
                     elif self.getPiece(y+1,x) is '.':
@@ -234,9 +234,10 @@ class Game:
     """
     def movePiece(self,direction,y,x):
         toggle = False
+        #print direction, "\n"
         if self.getPiece(y,x) is 'W':
             if y is not 0:
-                if direction is 'left':
+                if direction == 'left':
                     if x is 0:
                         print 'That move is outside the board!'
                         toggle = True
@@ -247,7 +248,7 @@ class Game:
                     else:
                         print 'That is an invalid move!'
                         toggle = True
-                elif direction is 'right':
+                elif direction == 'right':
                     if x is 5:
                         print 'That move is outside the board!'
                         toggle = True
@@ -258,7 +259,7 @@ class Game:
                     else:
                         print 'That is an invalid move!'
                         toggle = True
-                elif direction is 'forward':
+                elif direction == 'forward':
                     if self.getPiece(y-1,x) is 'B':
                         print 'there is a piece there!'
                         toggle = True
@@ -271,14 +272,14 @@ class Game:
                         print 'That is an invalid move!'
                         toggle = True
                 else:
-                    print 'that is not a direction!'
+                    print 'that is not a direction! White'
                     toggle = True
             else:
                 print 'We fucked up the code, chief! White'
                 toggle = True
         elif self.getPiece(y,x) is 'B':
             if y is not 5:
-                if direction is 'left':
+                if direction == 'left':
                     if x is 0:
                         print 'That move is outside the board!'
                         toggle = True
@@ -289,7 +290,7 @@ class Game:
                     else:
                         print 'That is an invalid move!'
                         toggle = True
-                elif direction is 'right':
+                elif direction == 'right':
                     if x is 5:
                         print 'That move is outside the board!'
                         toggle = True
@@ -300,7 +301,7 @@ class Game:
                     else:
                         print 'That is an invalid move!'
                         toggle = True
-                elif direction is 'forward':
+                elif direction == 'forward':
                     if self.getPiece(y+1,x) is 'W':
                         print 'there is a piece there!'
                         toggle = True
@@ -312,7 +313,7 @@ class Game:
                         print 'That is an invalid move!'
                         toggle = True
                 else:
-                    print 'that is not a direction!'
+                    print 'that is not a direction! Black'
                     toggle = True
             else:
                 print 'We fucked up the code, chief! Black'
