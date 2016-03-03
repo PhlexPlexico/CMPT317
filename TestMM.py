@@ -32,18 +32,24 @@ if __name__=='__main__':
     #Testing coords for reversal of x and y for array (funky shit messed us up on this)
     #testingCoords(a)
     
-    a.printBoard()
+    #a.printBoard()
     #a.togglePlayer()
     #print(a.str())
-    
-
+    """
+    a.setPiece(3,5,'B')
+    a.setPiece(4,4,'W')
+    a.setPiece(5,4,'.')
+    a.setPiece(4,5,'W')
+    a.setPiece(5,5,'.')
+    """
+    a.printBoard()
     
     while not a.isTerminal():
-    #for x in range(5):
+    #for x in range(1):
         path = []
-        b = minimax(a, 0, 5, path)
-        print path
+        b = minimax(a, 0, 4, path)
         if not (b[0])[0].isTerminal():
+            #print b[1]
             a = (b[0])[1]
         a.printBoard()
     

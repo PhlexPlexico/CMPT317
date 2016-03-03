@@ -367,6 +367,14 @@ class Game:
     
 if __name__=='__main__':
     x = Game()
+    x.setPiece(3,5,'B')
+    x.setPiece(4,4,'W')
+    x.setPiece(5,4,'.')
+    x.setPiece(5,5,'.')
+    x.setPiece(4,5,'W')
+    for y in x.successors():
+        y.printBoard()
+        print y.estimateUtility()
     #for x in x.successors():
     #    x.printBoard()
     #    print "\n"
