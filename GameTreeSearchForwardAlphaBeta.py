@@ -45,7 +45,7 @@ def minimaxAB(node, depth, depthLimit, path, alpha, beta):
                         if u[1] >= beta:
                             return u
                         #else set alpha to the max of alpha and the best route so far's utility
-                        alpha = max(alpha,u[1])
+                    alpha = max(alpha,u[1])
             elif node.isMinNode():
                 #Actual infinity
                 #u = (u[0],float("inf"))
@@ -61,7 +61,7 @@ def minimaxAB(node, depth, depthLimit, path, alpha, beta):
                         if u[1] <= alpha:
                             return u
                         #else set beta to the min of beta and the best route so far's utility
-                        beta = min(beta,u[1])
+                    beta = min(beta,u[1])
             else:
                 print("Something went horribly wrong")
                 return None
