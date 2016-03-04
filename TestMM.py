@@ -10,7 +10,7 @@ whosTurn = "Player"
 #===========================================================================
 #ENABLE TO TIME TRIAL THE AI // DISBLE TO RUN ONCE AND BE ABLE TO PLAY VS AI
 #===========================================================================
-TESTING = False
+TESTING = True
 
 
 #Tests that our coordinate system works with x and y properly
@@ -92,9 +92,9 @@ def runGame():
         #for x in range(1):
             path = []
             #without alpha-beta
-            b = minimax(a, 0, 4, path)
+            #b = minimax(a, 0, 5, path)
             #With alpha-beta
-            #b = minimaxAB(a, 0, 10, path, alpha, beta)
+            b = minimaxAB(a, 0, 5, path, alpha, beta)
             if not (b[0])[0].isTerminal():
                 #print b[1]
                 a = (b[0])[1]
@@ -249,7 +249,7 @@ if __name__=='__main__':
     
     if TESTING:
         #Change this number to # of trials
-        runNumber = 15
+        runNumber = 1
         #initializes the time sum
         averageTime = 0
         #counts the runs performed

@@ -333,7 +333,7 @@ class Game:
                 return True
             elif self.getPiece(5,x) is 'B':
                 return True
-            elif self.successors() is None:
+            elif not self.successors():
                 return True
         return False
         
