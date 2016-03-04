@@ -1,5 +1,5 @@
 import Game
-from GameTreeSearchForward import alphabeta
+from GameTreeSearchForwardAlphaBeta import minimaxAB
 
 gameMode = "AI"
 whosTurn = "Player"
@@ -72,7 +72,7 @@ if __name__=='__main__':
         while not a.isTerminal():
         #for x in range(1):
             path = []
-            b = alphabeta(a, 0, 4, path)
+            b = alphabeta(a, 4, -float("inf"),float("inf"), path)
             if not (b[0])[0].isTerminal():
                 #print b[1]
                 a = (b[0])[1]
@@ -139,7 +139,7 @@ if __name__=='__main__':
                 print 'AIs Turn!'
                 
                 path = []
-                b = alphabeta(a, 0, 4, path)
+                b = alphabeta(a, 4, -float("inf"), float("inf"), path)
                 if not (b[0])[0].isTerminal():
                     #print b[1]
                     a = (b[0])[1]
@@ -150,7 +150,7 @@ if __name__=='__main__':
                 print 'AIs Turn!'
                 
                 path = []
-                b = alphabeta(a, 0, 4, path)
+                b = alphabeta(a, 4, -float("inf"), float("inf"), path)
                 if not (b[0])[0].isTerminal():
                     #print b[1]
                     a = (b[0])[1]
@@ -200,7 +200,7 @@ if __name__=='__main__':
             
             else:
                 path = []
-                b = alphabeta(a, 0, 4, path)
+                b = alphabeta(a, 4, -float("inf"), float("inf"), path)
                 if not (b[0])[0].isTerminal():
                     #print b[1]
                     a = (b[0])[1]

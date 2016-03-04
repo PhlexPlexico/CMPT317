@@ -6,8 +6,7 @@ import math
 
 transpositionTable = dict()
 
-
-def minimax(node, depth, depthLimit, path):
+def minimaxAB(node, depth, depthLimit, path, alpha, beta):
     currPath = copy.deepcopy(path)
     currPath.append(node)
     
@@ -29,21 +28,40 @@ def minimax(node, depth, depthLimit, path):
             #Get a list of successors to current game state
             sucs = node.successors()
             #vs is the list of all tuples (path,utility) returned from running minimax on successors
-            vs = [minimax(c, depth+1, depthLimit, currPath) for c in sucs]
+            vs = [minimaxAB(c, depth+1, depthLimit, currPath, alpha, beta) for c in sucs]
             if node.isMaxNode():
+                #Actual infinity
+                #u = (u[0],-1*float("inf"))
+                #Sufficiently large
+                u = (u[0],-1500)
+                
                 #For all successors
                 for x in vs:
                     #If current best utility is <= utility of current successor
                     if u[1] <= x[1]:
                         #set the best route to the current successor
                         u = x
+                        #If the best route is greater utility than beta, return, because we're pruning this
+                        if u[1] >= beta:
+                            return u
+                        #else set alpha to the max of alpha and the best route so far's utility
+                        alpha = max(alpha,u[1])
             elif node.isMinNode():
-                #For all successors
+                #Actual infinity
+                #u = (u[0],float("inf"))
+                #Sufficiently large
+                u = (u[0],1500)
+                
                 for x in vs:
-                    #If current best utility is <= utility of current successor
+                    #If current best utility is >= utility of current successor
                     if u[1] >= x[1]:
                         #set the best route to the current successor
                         u = x
+                        #If the best route is greater utility than beta, return, because we're pruning this
+                        if u[1] <= alpha:
+                            return u
+                        #else set beta to the min of beta and the best route so far's utility
+                        beta = min(beta,u[1])
             else:
                 print("Something went horribly wrong")
                 return None
@@ -52,3 +70,4 @@ def minimax(node, depth, depthLimit, path):
         u = (currPath, node.estimateUtility())
     #transpositionTable[s] = u
     return u
+    
