@@ -95,9 +95,9 @@ def runGame():
             # for x in range(1):
             path = []
             # without alpha-beta
-            # b = minimax(a, 0, 5, path)
+            b = minimax(a, 0, 5, path)
             # With alpha-beta
-            b = minimaxAB(a, 0, 5, path, alpha, beta)
+            # b = minimaxAB(a, 0, 5, path, alpha, beta)
             if not (b[0])[0].isTerminal():
                 # print b[1]
                 a = (b[0])[1]
@@ -166,7 +166,8 @@ def runGame():
                 print 'AIs Turn!'
 
                 path = []
-                b = minimaxAB(a, 0, 5, path, alpha, beta)
+                b = minimax(a, 0, 5, path)
+                # b = minimaxAB(a, 0, 5, path, alpha, beta)
                 if not (b[0])[0].isTerminal():
                     # print b[1]
                     a = (b[0])[1]
@@ -177,7 +178,8 @@ def runGame():
                 print 'AIs Turn!'
 
                 path = []
-                b = minimaxAB(a, 0, 5, path, alpha, beta)
+                b = minimax(a, 0, 5, path)
+                # b = minimaxAB(a, 0, 5, path, alpha, beta)
                 if not (b[0])[0].isTerminal():
                     # print b[1]
                     a = (b[0])[1]
@@ -229,7 +231,8 @@ def runGame():
 
             else:
                 path = []
-                b = minimaxAB(a, 0, 5, path, alpha, beta)
+                b = minimax(a, 0, 5, path)
+                # b = minimaxAB(a, 0, 5, path, alpha, beta)
                 if not (b[0])[0].isTerminal():
                     # print b[1]
                     a = (b[0])[1]
