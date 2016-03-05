@@ -9,7 +9,7 @@ whosTurn = "Player"
 # ===========================================================================
 # ENABLE TO TIME TRIAL THE AI // DISBLE TO RUN ONCE AND BE ABLE TO PLAY VS AI
 # ===========================================================================
-TESTING = True
+TESTING = False
 
 
 # Tests that our coordinate system works with x and y properly
@@ -80,13 +80,14 @@ def runGame():
     if not TESTING:
         chooseMode()
 
+    # Actualy infinity
+    alpha = -1 * float("inf")
+    beta = float("inf")
     # For time trials
     start_time = time.time()
 
     if gameMode is 'AI':
-        # Actualy infinity
-        alpha = -1 * float("inf")
-        beta = float("inf")
+        
         # Sufficiently large, but actually not! We still ned +-inf for optimal times apparently! CPU dependent?
         # alpha = -1500
         # beta = 1500
@@ -165,7 +166,7 @@ def runGame():
                 print 'AIs Turn!'
 
                 path = []
-                b = minimax(a, 0, 4, path)
+                b = minimaxAB(a, 0, 5, path, alpha, beta)
                 if not (b[0])[0].isTerminal():
                     # print b[1]
                     a = (b[0])[1]
@@ -176,7 +177,7 @@ def runGame():
                 print 'AIs Turn!'
 
                 path = []
-                b = minimax(a, 0, 4, path)
+                b = minimaxAB(a, 0, 5, path, alpha, beta)
                 if not (b[0])[0].isTerminal():
                     # print b[1]
                     a = (b[0])[1]
@@ -228,7 +229,7 @@ def runGame():
 
             else:
                 path = []
-                b = minimax(a, 0, 4, path)
+                b = minimaxAB(a, 0, 5, path, alpha, beta)
                 if not (b[0])[0].isTerminal():
                     # print b[1]
                     a = (b[0])[1]
