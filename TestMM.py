@@ -83,11 +83,11 @@ def runGame():
     
     if gameMode is 'AI':
         #Actualy infinity
-        #alpha = -1*float("inf")
-        #beta = float("inf")
+        alpha = -1*float("inf")
+        beta = float("inf")
         #Sufficiently large
-        alpha = -1500
-        beta = 1500
+        #alpha = -1500
+        #beta = 1500
         
         transpositionTable = dict()
         while not a.isTerminal():
@@ -95,9 +95,9 @@ def runGame():
             transpositionTable.clear()
             path = []
             #without alpha-beta
-            #b = minimax(a, 0, 5, path, transpositionTable)
+            b = minimax(a, 0, 5, path, transpositionTable)
             #With alpha-beta
-            b = minimaxAB(a, 0, 5, path, alpha, beta, transpositionTable)
+            #b = minimaxAB(a, 0, 5, path, alpha, beta, transpositionTable)
             if not (b[0])[0].isTerminal():
                 #print b[1]
                 a = (b[0])[1]
@@ -284,4 +284,4 @@ if __name__=='__main__':
     
     if TESTING:
         print '# of runs tested: ',runNumber
-        print 'Average runtime for tests: ',averageTime/runCount
+        print 'Average runtime for tests: ', averageTime/runCount
