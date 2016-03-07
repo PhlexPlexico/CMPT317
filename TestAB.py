@@ -1,8 +1,17 @@
 import Game
+import time
+from GameTreeSearchForward import minimax
 from GameTreeSearchForwardAlphaBeta import minimaxAB
 
 gameMode = "AI"
 whosTurn = "Player"
+
+
+#===========================================================================
+#ENABLE TO TIME TRIAL THE AI // DISBLE TO RUN ONCE AND BE ABLE TO PLAY VS AI
+#===========================================================================
+TESTING = True
+
 
 #Tests that our coordinate system works with x and y properly
 def testingCoords(a):
@@ -12,7 +21,7 @@ def testingCoords(a):
     print a.getPiece(0,3), " Expected B"
     print a.getPiece(0,4), " Expected B"
     print a.getPiece(0,5), " Expected B"
-    
+
     print a.getPiece(5,5), " Expected W"
     print a.getPiece(5,4), " Expected W"
     print a.getPiece(5,3), " Expected W"
@@ -24,7 +33,7 @@ def whiteCheats(a):
     for x in range(6):
         a.setPiece(1,x,'W')
         a.setPiece(5,x,'.')
-    
+
 def chooseMode():
     mode = False
     global gameMode
@@ -63,22 +72,38 @@ def chooseMode():
                 print 'That is not a valid input'
                 turn = False
 
-if __name__=='__main__':
+def runGame():
     a = Game.Game()
-    
-    chooseMode()
-    
+
+    if not TESTING:
+        chooseMode()
+
+    #For time trials
+    start_time = time.time()
+
     if gameMode is 'AI':
+        #Actualy infinity
+        #alpha = -1*float("inf")
+        #beta = float("inf")
+        #Sufficiently large
+        alpha = -1500
+        beta = 1500
+
+        transpositionTable = dict()
         while not a.isTerminal():
         #for x in range(1):
+            transpositionTable.clear()
             path = []
-            b = alphabeta(a, 4, -float("inf"),float("inf"), path)
+            #without alpha-beta
+            #b = minimax(a, 0, 5, path, transpositionTable)
+            #With alpha-beta
+            b = minimaxAB(a, 0, 5, path, alpha, beta, transpositionTable)
             if not (b[0])[0].isTerminal():
                 #print b[1]
                 a = (b[0])[1]
             a.printBoard()
             print '\n'
-            
+
         finalUtil = a.utility()
         if finalUtil < 0:
             print '======================='
@@ -104,10 +129,10 @@ if __name__=='__main__':
                         try:
                             #piece = tuple(map(int,raw_input().split(',')))
                             piece = tuple(int(x.strip()) for x in raw_input('Which piece do you want to move? (give in \"x,y\" format with (0,0 in top left))\n').split(','))
-                        except ValueError:
-                            print 'Please input a proper tuple'
+                        except (ValueError):
+                            print 'Please input a proper tuple.'
                             continue
-                        
+
                         if type(piece) is not tuple:
                             print 'That is not a valid piece'
                             print type(piece)
@@ -132,31 +157,32 @@ if __name__=='__main__':
                         print 'That is not a valid move'
                         piece = False
                         direction = False
-                
+
                 a.movePiece(userIn,piece[0],piece[1])
-                
+
                 a.printBoard()
                 print 'AIs Turn!'
-                
+
                 path = []
-                b = alphabeta(a, 4, -float("inf"), float("inf"), path)
+               # b = minimax(a, 0, 4, path)
+                b = minimaxAB(a, 0, 4, path, alpha, beta, transpositionTable)
                 if not (b[0])[0].isTerminal():
                     #print b[1]
                     a = (b[0])[1]
                 a.printBoard()
                 print '\n'
-                
+
             elif a.isMaxNode() and (whosTurn is 'AI'):
                 print 'AIs Turn!'
-                
+
                 path = []
-                b = alphabeta(a, 4, -float("inf"), float("inf"), path)
+                b = minimaxAB(a, 0, 4, path, alpha, beta, transpositionTable)
                 if not (b[0])[0].isTerminal():
                     #print b[1]
                     a = (b[0])[1]
                 a.printBoard()
                 print '\n'
-                
+
                 print 'Your Turn!'
                 piece = False
                 valid = False
@@ -168,7 +194,7 @@ if __name__=='__main__':
                         except ValueError:
                             print 'Please input a proper tuple'
                             continue
-                        
+
                         if type(piece) is not tuple:
                             print 'That is not a valid piece'
                             print type(piece)
@@ -193,20 +219,20 @@ if __name__=='__main__':
                         print 'That is not a valid move'
                         piece = False
                         direction = False
-                
+
                 a.movePiece(userIn,piece[0],piece[1])
-                
+
                 a.printBoard()
-            
+
             else:
                 path = []
-                b = alphabeta(a, 4, -float("inf"), float("inf"), path)
+                b = minimaxAB(a, 0, 4, path, alpha, beta, transpositionTable)
                 if not (b[0])[0].isTerminal():
                     #print b[1]
                     a = (b[0])[1]
                 a.printBoard()
                 print '\n'
-            
+
         finalUtil = a.utility()
         if finalUtil < 0:
             print '======================='
@@ -220,3 +246,43 @@ if __name__=='__main__':
             print '======================='
             print '=========DRAW=========='
             print '======================='
+
+if __name__=='__main__':
+    global averageTime
+    global runCount
+
+    if TESTING:
+        #Change this number to # of trials
+        runNumber = 5
+        #initializes the time sum
+        averageTime = 0
+        #counts the runs performed
+        runCount = 0
+    else:
+        #Run the game only once because not testing
+        runNumber = 1
+
+
+    #For each run
+    for x in range(runNumber):
+        if TESTING:
+            #Start the timer for current run
+            start_time = time.time()
+
+        #Run the game
+        runGame()
+
+        if TESTING:
+            #For time trials
+            totalRuntime = time.time() - start_time
+            #Print info for the trial we just ran
+            print 'Runtime for trial #',x+1
+            print("--- %s seconds ---" % (totalRuntime))
+            #Add this run's time to total runtime
+            averageTime = averageTime + totalRuntime
+            #Increment the runs performed counter
+            runCount += 1
+
+    if TESTING:
+        print '# of runs tested: ',runNumber
+        print 'Average runtime for tests: ',averageTime/runCount
