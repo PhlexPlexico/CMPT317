@@ -95,7 +95,7 @@ def runGame():
             transpositionTable.clear()
             path = []
             #without alpha-beta
-            b = minimax(a, 0, 5, path, transpositionTable)
+            b = minimax(a, 0, 8, path, transpositionTable)
             #With alpha-beta
             #b = minimaxAB(a, 0, 5, path, alpha, beta, transpositionTable)
             if not (b[0])[0].isTerminal():
@@ -252,7 +252,7 @@ if __name__=='__main__':
     
     if TESTING:
         #Change this number to # of trials
-        runNumber = 5
+        runNumber = 1
         #initializes the time sum
         averageTime = 0
         #counts the runs performed
